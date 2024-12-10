@@ -8,6 +8,9 @@ contract Staking {
 
     IERC20 public immutable token;
 
+    event Staked(address indexed caller, address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, address indexed recipient, uint256 amount);
+
     mapping(address => uint256) public userStakes;
 
     constructor(IERC20 _token) {
@@ -21,6 +24,7 @@ contract Staking {
     function stakeFor(address user, uint256 amount) public {
         userStakes[user] += amount;
         token.safeTransferFrom(msg.sender, address(this), amount);
+        emit Staked(msg.sender, user, amount);
     }
 
     function withdraw(uint256 amount) external {
@@ -30,5 +34,6 @@ contract Staking {
     function withdrawTo(address recipient, uint256 amount) public {
         userStakes[msg.sender] -= amount;
         token.safeTransfer(recipient, amount);
+        emit Withdrawn(msg.sender, recipient, amount);
     }
 }
