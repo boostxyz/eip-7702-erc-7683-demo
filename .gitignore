@@ -29,6 +29,8 @@ next-env.d.ts
 # forge
 contracts/cache
 contracts/out
+contracts/broadcast
+contracts/lib
 
 # lib
 src/_dist
