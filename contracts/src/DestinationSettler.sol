@@ -57,13 +57,13 @@ contract DestinationSettler is ReentrancyGuard {
         // The following call will only succeed if the user has set a 7702 authorization to set its code
         // equal to the XAccount contract. The filler should have seen any auth data emitted in an OriginSettler
         // event on the sending chain.
-        XAccount(payable(callsByUser.user)).xExecute(callsByUser);
+        ExperimentalDelegation(payable(callsByUser.user)).xExecute(callsByUser);
 
         // Perform any final steps required to prove that filler has successfully filled the ERC7683 intent.
         // For example, we could emit an event containing a unique hash of the fill that could be proved
         // on the origin chain via a receipt proof + RIP7755.
         // e.g. emit Executed(orderId)
-	emit Executed(orderId);
+        emit Executed(orderId);
     }
 
     // Pull funds into this settlement contract as escrow and use to execute user's calldata. Escrowed
@@ -94,46 +94,5 @@ contract DestinationSettler is ReentrancyGuard {
         // TODO: We might not need this function at all, because if the authorization data requires that this contract
         // is set as the delegation code, then xExecute would fail if the auth data is not submitted by the filler.
         // However, it might still be useful to verify that the delegate is set correctly, like checking EXTCODEHASH.
-    }
-}
-
-// TODO: Move to separate file once we are more confident in architecture. For now keep here for readability.
-
-/**
- * @notice Singleton contract used by all users who want to sign data on origin chain and delegate execution of
- * their calldata on this chain to this contract.
- */
-contract XAccount is ReentrancyGuard, ExperimentalDelegation {
-    /// @notice Address of settlement contract that can delegate user ops to this smart contract wallet.
-    address public immutable DESTINATION_SETTLER;
-
-    error NotCalledByDestinationSettler();
-    error CallReverted(uint256 index, Call[] calls);
-    error InvalidCall(uint256 index, Call[] calls);
-
-    constructor(address _destinationSettler) {
-	DESTINATION_SETTLER = _destinationSettler;
-    }
-    // Entrypoint function to be called by DestinationSettler contract on this chain.
-    // Assume user has 7702-delegated code already to this contract.
-    // All calldata and 7702 authorization data is assumed to have been emitted on the origin chain in am ERC7683
-    // intent creation event.
-    function xExecute(CallByUser memory userCalls) external nonReentrant {
-        if (msg.sender != DESTINATION_SETTLER) revert NotCalledByDestinationSettler();
-        _attemptCalls(userCalls.calls);
-    }
-
-    function _attemptCalls(Call[] memory calls) internal {
-        for (uint256 i = 0; i < calls.length; ++i) {
-            Call memory call = calls[i];
-
-            // If we are calling an EOA with calldata, assume target was incorrectly specified and revert.
-            if (call.callData.length > 0 && call.target.code.length == 0) {
-                revert InvalidCall(i, calls);
-            }
-
-            (bool success,) = call.target.call{value: call.value}(call.callData);
-            if (!success) revert CallReverted(i, calls);
-        }
     }
 }
