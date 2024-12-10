@@ -20,11 +20,15 @@ contract Staking {
 
     function stakeFor(address user, uint256 amount) public {
         userStakes[user] += amount;
-        token.safeTransferFrom(user, address(this), amount);
+        token.safeTransferFrom(msg.sender, address(this), amount);
     }
 
     function withdraw(uint256 amount) external {
+        withdrawTo(msg.sender, amount);
+    }
+
+    function withdrawTo(address recipient, uint256 amount) public {
         userStakes[msg.sender] -= amount;
-        token.safeTransfer(msg.sender, amount);
+        token.safeTransfer(recipient, amount);
     }
 }
