@@ -6,6 +6,7 @@ libs = ["lib"]
 remappings = [
     "forge-std/=lib/forge-std/src",
     "solady/=lib/solady/src",
+    "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/",
 ]
 via_ir = true
 evm_version = "prague"
