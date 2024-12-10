@@ -27,6 +27,8 @@ contract DestinationSettler is ReentrancyGuard {
     /// @notice Store unique orders to prevent duplicate fills for the same order.
     mapping(bytes32 => bool) public fillStatuses;
 
+    event Executed(bytes32 indexed orderId);
+
     error InvalidOrderId();
     error DuplicateFill();
     error InvalidUserSignature();
@@ -61,6 +63,7 @@ contract DestinationSettler is ReentrancyGuard {
         // For example, we could emit an event containing a unique hash of the fill that could be proved
         // on the origin chain via a receipt proof + RIP7755.
         // e.g. emit Executed(orderId)
+	emit Executed(orderId);
     }
 
     // Pull funds into this settlement contract as escrow and use to execute user's calldata. Escrowed
