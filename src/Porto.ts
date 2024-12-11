@@ -11,11 +11,13 @@ import * as WebAuthn from './internal/webauthn.js'
 
 export const defaultConfig = {
   announceProvider: true,
-  chains: [Chains.odysseyTestnet],
+  chains: [Chains.odysseyTestnet2],
+  // chains: [Chains.odysseyTestnet],
   headless: true,
   keystoreHost: 'self',
   transports: {
-    [Chains.odysseyTestnet.id]: http(),
+    // [Chains.odysseyTestnet.id]: http(),
+    [Chains.odysseyTestnet2.id]: http(),
   },
 } as const satisfies Config
 

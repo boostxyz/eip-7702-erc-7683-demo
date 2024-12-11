@@ -1,12 +1,6 @@
 import { W } from 'porto/wagmi'
-import { type Hex, formatEther, parseEther } from 'viem'
-import {
-  type BaseError,
-  useAccount,
-  useConnectors,
-  useReadContract,
-} from 'wagmi'
-import { useCallsStatus, useSendCalls } from 'wagmi/experimental'
+import type { Hex } from 'viem'
+import { useAccount, useConnectors } from 'wagmi'
 
 import { useState } from 'react'
 import {
@@ -14,7 +8,7 @@ import {
   privateKeyToAccount,
   privateKeyToAddress,
 } from 'viem/accounts'
-import { ExperimentERC20 } from './contracts'
+import { Stake } from './components/Stake'
 
 export function App() {
   const { isConnected } = useAccount()
@@ -22,11 +16,7 @@ export function App() {
     <>
       <Account />
       {isConnected ? (
-        <>
-          <Balance />
-          <GrantSession />
-          <Mint />
-        </>
+        <Stake />
       ) : (
         <>
           <Connect />
@@ -177,94 +167,6 @@ function ImportAccount() {
         ))}
       <div>{importAccount.status}</div>
       <div>{importAccount.error?.message}</div>
-    </div>
-  )
-}
-
-function Balance() {
-  const { address } = useAccount()
-  const { data: balance } = useReadContract({
-    ...ExperimentERC20,
-    query: {
-      enabled: !!address,
-      refetchInterval: 2_000,
-    },
-    functionName: 'balanceOf',
-    args: [address!],
-  })
-
-  return (
-    <div>
-      <h2>Balance</h2>
-      <div>Balance: {formatEther(balance ?? 0n)} EXP</div>
-    </div>
-  )
-}
-
-function GrantSession() {
-  const sessions = W.useSessions()
-  const grantSession = W.useGrantSession()
-
-  if (sessions.data?.length !== 0) return null
-  return (
-    <div>
-      <h2>Grant Session</h2>
-      <button onClick={() => grantSession.mutate({})} type="button">
-        Grant Session
-      </button>
-      {grantSession.data && <div>Session granted.</div>}
-      {grantSession.error && (
-        <div>
-          Error: {grantSession.error.shortMessage || grantSession.error.message}
-        </div>
-      )}
-    </div>
-  )
-}
-
-function Mint() {
-  const { address } = useAccount()
-  const { data: id, error, isPending, sendCalls } = useSendCalls()
-
-  const { isLoading: isConfirming, isSuccess: isConfirmed } = useCallsStatus({
-    id: id as string,
-    query: {
-      enabled: !!id,
-      refetchInterval({ state }) {
-        if (state.data?.status === 'CONFIRMED') return false
-        return 1_000
-      },
-    },
-  })
-
-  return (
-    <div>
-      <h2>Mint EXP</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          sendCalls({
-            calls: [
-              {
-                abi: ExperimentERC20.abi,
-                to: ExperimentERC20.address,
-                functionName: 'mint',
-                args: [address!, parseEther('100')],
-              },
-            ],
-          })
-        }}
-      >
-        <button disabled={isPending} type="submit">
-          {isPending ? 'Confirming...' : 'Mint 100 EXP'}
-        </button>
-      </form>
-      {id && <div>Transaction Hash: {id}</div>}
-      {isConfirming && 'Waiting for confirmation...'}
-      {isConfirmed && 'Transaction confirmed.'}
-      {error && (
-        <div>Error: {(error as BaseError).shortMessage || error.message}</div>
-      )}
     </div>
   )
 }
