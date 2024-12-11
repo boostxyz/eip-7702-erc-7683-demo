@@ -12,5 +12,11 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "ethers": "5.7"
+  },
+  "devDependencies": {
+    "@ethersproject/abi": "^5.7.0",
+    "@ethersproject/providers": "^5.7.2",
+    "@typechain/ethers-v5": "^11.1.2",
+    "typechain": "^8.3.2"
   }
 }

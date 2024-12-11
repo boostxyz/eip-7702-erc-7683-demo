@@ -23,7 +23,8 @@
     "preconstruct": "tsx ./scripts/preconstruct.ts",
     "preinstall": "pnpx only-allow pnpm",
     "prepare": "pnpm simple-git-hooks",
-    "relayer": "node relayer/_dist/index.js"
+    "relayer": "node relayer/_dist/index.js",
+    "typings:relayer": "pnpm typechain --target ethers-v5 --out-dir relayer/contract-types  './contracts/out/*.sol/*.json'"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
