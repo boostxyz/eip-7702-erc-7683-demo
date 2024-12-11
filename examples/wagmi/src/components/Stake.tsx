@@ -1,15 +1,18 @@
-import { parseEther } from 'viem'
-import { type BaseError, useAccount } from 'wagmi'
+import { useState } from 'react'
+import { type BaseError, useChainId } from 'wagmi'
 import { useCallsStatus, useSendCalls } from 'wagmi/experimental'
+import { getTransactionLink, shortenHash } from '../lib/utils'
+import { Button, Input } from './ui'
 
 export function Stake() {
-  const { address } = useAccount()
-  const { data: id, error, isPending, sendCalls } = useSendCalls()
+  const chainId = useChainId()
+  const [amount, setAmount] = useState<string>('')
+  const { data: hash, error, isPending, sendCalls } = useSendCalls()
 
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useCallsStatus({
-    id: id as string,
+    id: hash as string,
     query: {
-      enabled: !!id,
+      enabled: !!hash,
       refetchInterval({ state }) {
         if (state.data?.status === 'CONFIRMED') return false
         return 1_000
@@ -18,21 +21,38 @@ export function Stake() {
   })
 
   return (
-    <div>
-      <h2>Stake</h2>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault()
-          sendCalls({
-            calls: [],
-          })
-        }}
+    <div className="mt-10 flex flex-col items-start gap-6">
+      <h2 className="text-3xl font-bold">Stake</h2>
+      <Input
+        className="text-2xl"
+        placeholder="100 USDC"
+        type="text"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+      />
+      <Button
+        className="w-fit px-6"
+        // TODO: update calls
+        onClick={() => sendCalls({ calls: [] })}
+        disabled={isPending}
+        type="submit"
       >
-        <button disabled={isPending} type="submit">
-          {isPending ? 'Confirming...' : 'Mint 100 EXP'}
-        </button>
-      </form>
-      {id && <div>Transaction Hash: {id}</div>}
+        {isPending ? 'Confirming...' : 'Stake'}
+      </Button>
+
+      {hash && (
+        <div>
+          Transaction:{' '}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={getTransactionLink(hash, chainId)}
+          >
+            {shortenHash(hash)}
+          </a>
+          {}
+        </div>
+      )}
       {isConfirming && 'Waiting for confirmation...'}
       {isConfirmed && 'Transaction confirmed.'}
       {error && (

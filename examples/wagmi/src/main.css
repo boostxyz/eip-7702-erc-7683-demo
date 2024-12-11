@@ -22,7 +22,7 @@
     --destructive-foreground: 0 85.7% 97.3%;
     --border: 226.67 5.52% 31.96%;
     --input: 230, 6.25%, 18.82%;
-    --ring: 142.4 71.8% 29.2%;
+    --ring: 166 92% 70%;
     --radius: 0.3rem;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -33,6 +33,9 @@
 }
 
 @layer base {
+  a {
+    @apply underline text-primary/60 hover:text-primary;
+  }
   .container {
     @apply text-wrap break-words shadow-md max-w-[400px] bg-popover p-6 rounded-lg border border-border;
   }

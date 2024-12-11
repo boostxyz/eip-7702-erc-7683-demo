@@ -1,30 +1,39 @@
+import { getAddressLink, shortenHash } from '@/lib/utils'
 import { W } from 'porto/wagmi'
 import { useAccount } from 'wagmi'
+import { Button } from './ui'
 
 export function Account() {
   const account = useAccount()
-  const { data: sessions } = W.useSessions()
   const disconnect = W.useDisconnect()
 
   return (
-    <div>
-      <h2>Account</h2>
+    <div className="w-full text-xl flex flex-col gap-2 items-start">
+      <div className="w-full flex gap-2 items-center">
+        <span className="font-bold ">Account:</span>
+        <a
+          target="_blank"
+          rel="noreferrer"
+          href={getAddressLink(account.address, account.chainId)}
+        >
+          {shortenHash(account.address)}x
+        </a>
 
-      <div>
-        account: {account.address}
-        <br />
-        chainId: {account.chainId}
-        <br />
-        status: {account.status}
-        <br />
-        sessions: {JSON.stringify(sessions)}
+        {account.status !== 'disconnected' && (
+          <Button
+            className="ml-auto"
+            type="button"
+            onClick={() => disconnect.mutate({})}
+          >
+            Log Out
+          </Button>
+        )}
       </div>
 
-      {account.status !== 'disconnected' && (
-        <button type="button" onClick={() => disconnect.mutate({})}>
-          Log Out
-        </button>
-      )}
+      {/* <div className="w-full flex gap-2 items-center">
+        <span className="font-bold ">Chain ID:</span>
+        <span>{account.chainId}</span>
+      </div> */}
     </div>
   )
 }

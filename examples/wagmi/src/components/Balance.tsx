@@ -4,6 +4,8 @@ import { ExperimentERC20 } from '.././contracts'
 
 export function Balance() {
   const { address } = useAccount()
+  // TODO: add token contract
+
   const { data: balance } = useReadContract({
     ...ExperimentERC20,
     query: {
@@ -15,9 +17,8 @@ export function Balance() {
   })
 
   return (
-    <div>
-      <h2>Balance</h2>
-      <div>Balance: {formatEther(balance ?? 0n)} EXP</div>
-    </div>
+    <>
+      <div>Balance: {formatEther(balance ?? 0n)} USDC</div>
+    </>
   )
 }
