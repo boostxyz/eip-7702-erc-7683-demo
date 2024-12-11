@@ -8,19 +8,34 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@radix-ui/react-checkbox": "^1.1.2",
+    "@radix-ui/react-dialog": "^1.1.2",
+    "@radix-ui/react-popover": "^1.1.2",
+    "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-slot": "^1.1.0",
     "@tanstack/react-query": "catalog:",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.468.0",
     "ox": "^0.2.2",
     "porto": "workspace:*",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss-animate": "^1.0.7",
+    "usehooks-ts": "^3.1.0",
     "viem": "catalog:",
     "wagmi": "catalog:"
   },
   "devDependencies": {
+    "@types/node": "^22.10.1",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
     "globals": "^15.11.0",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
     "typescript": "~5.6.3",
     "vite": "^5.4.10"
   }

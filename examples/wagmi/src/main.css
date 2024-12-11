@@ -1,12 +1,44 @@
-:root {
-  background-color: #181818;
-  color: rgba(255, 255, 255, 0.87);
-  color-scheme: light dark;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 230 6.25% 18.82%;
+    --foreground: 202.86, 12%, 65.69%;
+    --card: 24 9.8% 10%;
+    --card-foreground: 202.86, 12%, 65.69%;
+    --popover: 231.43 6.31% 21.76%;
+    --popover-foreground: 202.86, 12%, 65.69%;
+    --primary: 166 92% 70%;
+    --primary-foreground: 144.9 80.4% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 88% 61%;
+    --destructive-foreground: 0 85.7% 97.3%;
+    --border: 226.67 5.52% 31.96%;
+    --input: 230, 6.25%, 18.82%;
+    --ring: 142.4 71.8% 29.2%;
+    --radius: 0.3rem;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    background-color: #f8f8f8;
-    color: #181818;
+@layer base {
+  .container {
+    @apply text-wrap break-words shadow-md max-w-[400px] bg-popover p-6 rounded-lg border border-border;
+  }
+  html,
+  body {
+    font-family: monospace;
+    @apply bg-background text-foreground;
   }
 }
