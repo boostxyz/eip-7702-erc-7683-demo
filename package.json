@@ -5,6 +5,7 @@
   "scripts": {
     "build": "pnpm clean && tsc --project ./tsconfig.build.json",
     "build:contracts": "forge build --config-path ./contracts/foundry.toml",
+    "build:relayer": "pnpm clean:relayer && tsc --project ./tsconfig.relayer.json",
     "changeset:prepublish": "pnpm build && tsx ./scripts/prepublish.ts",
     "changeset:publish": "pnpm changeset:prepublish && changeset publish",
     "changeset:version": "changeset version && pnpm format",
@@ -12,6 +13,7 @@
     "check:repo": "sherif",
     "check:types": "tsc --noEmit",
     "clean": "rm -rf src/_dist src/Chains src/Porto src/wagmi ./tsconfig.build.tsbuildinfo src/tsconfig.build.tsbuildinfo",
+    "clean:relayer": "rm -rf relayer/_dist relayer/tsconfig.relayer.tsbuildinfo",
     "deps": "pnpx taze -r",
     "dev": "pnpm preconstruct && pnpm --filter playground dev",
     "dev:wagmi": "pnpm preconstruct && pnpm --filter wagmi-example dev",
@@ -20,7 +22,8 @@
     "postinstall": "pnpm preconstruct",
     "preconstruct": "tsx ./scripts/preconstruct.ts",
     "preinstall": "pnpx only-allow pnpm",
-    "prepare": "pnpm simple-git-hooks"
+    "prepare": "pnpm simple-git-hooks",
+    "relayer": "node relayer/_dist/index.js"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.8.3",
