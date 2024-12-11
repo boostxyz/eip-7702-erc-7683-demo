@@ -12,6 +12,7 @@ import {
   privateKeyToAddress,
 } from 'viem/accounts'
 import { useConnectors } from 'wagmi'
+import { Spinner } from './Spinner'
 
 const privateKey =
   '7c4f71dcefadff6a5104f6eb359c0514b5f874bc22f7e684576ee9decc847491'
@@ -30,29 +31,17 @@ function Connect() {
   const connect = W.useConnect()
 
   return (
-    <div>
+    <div className="flex flex-col gap-4">
       {connectors
         .filter((x) => x.id === 'xyz.ithaca.porto')
         ?.map((connector) => (
-          <div key={connector.uid}>
+          <div className="flex gap-6" key={connector.uid}>
             <Button
               key={connector.uid}
               onClick={() => connect.mutate({ connector, grantSession: true })}
               type="button"
             >
-              Connect
-            </Button>
-            <Button
-              onClick={() =>
-                connect.mutate({
-                  connector,
-                  createAccount: true,
-                  grantSession: true,
-                })
-              }
-              type="button"
-            >
-              Register
+              Log In
             </Button>
           </div>
         ))}
@@ -87,32 +76,33 @@ function ImportAccount() {
 
   return (
     <>
-      <h2 className="text-xl">New Account</h2>
+      <div className="flex gap-4 relative">
+        <Button
+          onClick={() => {
+            const privateKey = generatePrivateKey()
+            setPrivateKey(privateKey)
+            setAccountData({
+              privateKey,
+              address: privateKeyToAddress(privateKey),
+            })
+            setStatus(Status.PENDING)
 
-      <Button
-        onClick={() => {
-          const privateKey = generatePrivateKey()
-          setPrivateKey(privateKey)
-          setAccountData({
-            privateKey,
-            address: privateKeyToAddress(privateKey),
-          })
-          setStatus(Status.PENDING)
-
-          importAccount.mutate({
-            account: privateKeyToAccount(privateKey),
-            connector: connectors.find(
-              (conn) => conn.id === 'xyz.ithaca.porto',
-            )!,
-            grantSession: true,
-          })
-        }}
-        type="button"
-      >
-        Create Wallet
-      </Button>
-
-      <LoadingIndicator status={status} />
+            importAccount.mutate({
+              account: privateKeyToAccount(privateKey),
+              connector: connectors.find(
+                (conn) => conn.id === 'xyz.ithaca.porto',
+              )!,
+              grantSession: true,
+            })
+          }}
+          type="button"
+        >
+          Create Wallet
+        </Button>
+        <div className="absolute flex items-center justify-center -right-12 w-10 h-full">
+          <Spinner status={status} />
+        </div>
+      </div>
     </>
   )
 }

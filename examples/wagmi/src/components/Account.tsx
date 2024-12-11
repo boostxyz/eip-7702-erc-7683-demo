@@ -16,7 +16,7 @@ export function Account() {
           rel="noreferrer"
           href={getAddressLink(account.address, account.chainId)}
         >
-          {shortenHash(account.address)}x
+          {shortenHash(account.address)}
         </a>
 
         {account.status !== 'disconnected' && (
