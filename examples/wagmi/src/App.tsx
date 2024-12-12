@@ -13,7 +13,6 @@ export function App() {
         <div className="container max-w-screen-sm">
           <Account />
           <Balance />
-          <GrantSession />
           <Stake />
         </div>
       ) : (
