@@ -1,4 +1,10 @@
-import { env, getOriginSettlerContract, getProvider } from './lib'
+import {
+  DestinationSettlerClient,
+  env,
+  getOriginSettlerContract,
+  getProvider,
+  odyssey2,
+} from './lib'
 
 async function main() {
   // Get providers.
@@ -8,11 +14,19 @@ async function main() {
   const destinationChainId = (await destinationProvider.getNetwork()).chainId
 
   const originSettler = getOriginSettlerContract(originProvider)
-
+  const destinationSettlerClient = new DestinationSettlerClient(
+    `0x${process.env.RELAYER_PRIVATE_KEY}`,
+  )
+  console.log("Listening for deposit events.");
   originSettler.on(
     originSettler.filters.Open(),
-    (orderId, resolvedOrder, openEvent) => {},
+    async (orderId, resolvedOrder, openEvent) => {
+      const txnHash = await destinationSettlerClient.fill(resolvedOrder)
+    },
   )
 }
 
-main()
+main().catch((error) => {
+  console.error(error)
+  process.exitCode = 1
+})

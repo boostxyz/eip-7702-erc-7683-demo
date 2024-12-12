@@ -1,7 +1,11 @@
 import { Contract, providers } from 'ethers'
 import { env } from '.'
-import { originSettlerAbi, testableERC20Abi } from '../abi'
-import type { OriginSettler } from '../contract-types'
+import {
+  destinationSettlerAbi,
+  originSettlerAbi,
+  testableERC20Abi,
+} from '../abi'
+import type { DestinationSettler, OriginSettler } from '../contract-types'
 
 export function getProvider(providerUrl: string) {
   return new providers.JsonRpcProvider(providerUrl)
@@ -12,6 +16,17 @@ export function getOriginSettlerContract(provider: providers.Provider) {
     originSettlerAbi,
     provider,
   ) as OriginSettler
+}
+
+export function getDestinationSettlerContract(provider: providers.Provider) {
+  return new Contract(
+    env.destinationSettler,
+    destinationSettlerAbi,
+    provider,
+  ) as DestinationSettler
+}
+export function getDestinationProvider() {
+  return new providers.JsonRpcProvider(env.destinationProviderUrl)
 }
 
 export function getTestableERC20Contract() {
