@@ -1,10 +1,10 @@
 import { W } from 'porto/wagmi'
 import {
-  Address,
+  type Address,
+  type Hex,
   concat,
   concatHex,
   formatEther,
-  Hex,
   keccak256,
   maxUint32,
   padBytes,
@@ -15,66 +15,43 @@ import {
 import {
   type BaseError,
   useAccount,
+  useChainId,
   useReadContract,
   useSignMessage,
   useWalletClient,
 } from 'wagmi'
 import { useCallsStatus, useSendCalls } from 'wagmi/experimental'
 
+import { getTransactionLink, shortenHash } from '@/lib/utils'
+import { useState } from 'react'
+import { odysseyTestnet2 } from '../config'
 import {
-  ExperimentalDelegation,
   ExperimentERC20,
+  ExperimentalDelegation,
   OriginSettler,
   Staking,
 } from '../contracts'
-import { odysseyTestnet2 } from '../config'
 import {
   encodeAsset,
   encodeCallByUser,
-  encodeEIP7702AuthData,
   encodeCallByUserCalls,
+  encodeEIP7702AuthData,
   encodeStakingCalls,
 } from '../settler'
+import { Button, Input } from './ui'
 
 export function Stake() {
   return (
     <>
-      <BalanceAndStake />
       <StakeForm />
       <Mint />
     </>
   )
 }
 
-function BalanceAndStake() {
-  const { address } = useAccount()
-  const { data: balance } = useReadContract({
-    ...ExperimentERC20,
-    address: '0x28077B47Cd03326De7838926A63699849DD4fa87',
-    query: {
-      enabled: !!address,
-      refetchInterval: 2_000,
-    },
-    functionName: 'balanceOf',
-    args: [address!],
-    chainId: odysseyTestnet2.id,
-  })
-  const { data: staked } = useReadContract({
-    ...Staking,
-    functionName: 'userStakes',
-    args: [address!],
-    chainId: odysseyTestnet2.id,
-  })
-
-  return (
-    <div>
-      <div>Balance (origin): {formatEther(balance ?? 0n)} USDC</div>
-      <div>Stake (destination): {formatEther(staked ?? 0n)} USDC</div>
-    </div>
-  )
-}
-
 function StakeForm() {
+  const chainId = useChainId()
+  const [amount, setAmount] = useState('')
   const { address } = useAccount()
   const { data: id, error, isPending, sendCalls } = useSendCalls()
   const { signMessageAsync } = useSignMessage()
@@ -97,11 +74,14 @@ function StakeForm() {
     address: address!,
   })
 
-  console.log({ error })
-
   return (
-    <div>
-      <h2>Stake</h2>
+    <div className="flex flex-col gap-4 mt-10">
+      <Input
+        placeholder="100 USDC"
+        type="text"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+      />
       <form
         onSubmit={async (e) => {
           e.preventDefault()
@@ -132,7 +112,6 @@ function StakeForm() {
           const eip7702AuthDataFromInit = JSON.parse(
             localStorage.getItem('eip7702AuthData') ?? '{}',
           )
-          console.log('@@@', eip7702AuthDataFromInit)
 
           const eip7702AuthData = {
             authlist: [
@@ -152,12 +131,6 @@ function StakeForm() {
             encodedEIP7702AuthData,
             encodedAsset,
           ])
-          console.log('@@@', {
-            encodedCallByUser,
-            encodedEIP7702AuthData,
-            encodedAsset,
-            encodedOrderData,
-          })
 
           sendCalls({
             chainId: odysseyTestnet2.id,
@@ -184,11 +157,23 @@ function StakeForm() {
           })
         }}
       >
-        <button disabled={isPending} type="submit">
+        <Button disabled={isPending} type="submit">
           {isPending ? 'Confirming...' : 'Stake'}
-        </button>
+        </Button>
       </form>
-      {id && <div>Transaction Hash: {id}</div>}
+      {id && (
+        <div>
+          Transaction:{' '}
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href={getTransactionLink(id, chainId)}
+          >
+            {shortenHash(id)}
+          </a>
+          {}
+        </div>
+      )}
       {isConfirming && 'Waiting for confirmation...'}
       {isConfirmed && 'Transaction confirmed.'}
       {error && (

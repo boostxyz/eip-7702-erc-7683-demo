@@ -2,32 +2,32 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { Script, ScriptInterface } from "../Script";
+import type { Provider } from '@ethersproject/providers'
+import { Contract, type Signer, utils } from 'ethers'
+import type { Script, ScriptInterface } from '../Script'
 
 const _abi = [
   {
-    type: "function",
-    name: "IS_SCRIPT",
+    type: 'function',
+    name: 'IS_SCRIPT',
     inputs: [],
     outputs: [
       {
-        name: "",
-        type: "bool",
-        internalType: "bool",
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
-] as const;
+] as const
 
 export class Script__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): ScriptInterface {
-    return new utils.Interface(_abi) as ScriptInterface;
+    return new utils.Interface(_abi) as ScriptInterface
   }
   static connect(address: string, signerOrProvider: Signer | Provider): Script {
-    return new Contract(address, _abi, signerOrProvider) as Script;
+    return new Contract(address, _abi, signerOrProvider) as Script
   }
 }
