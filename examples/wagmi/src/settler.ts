@@ -1,14 +1,12 @@
 import {
   type Address,
   type Hex,
-  concatHex,
   encodeAbiParameters,
   encodeFunctionData,
   encodePacked,
-  getAbiItem,
   keccak256,
 } from 'viem'
-import { ExperimentERC20, OriginSettler, Staking } from './contracts'
+import { ExperimentERC20, Staking } from './contracts'
 
 type Asset = {
   token: Address
@@ -36,8 +34,8 @@ export function encodeStakingCalls(params: {
 }) {
   const stakingCalls = [
     {
-      // https://explorer-odyssey-2.t.conduit.xyz/address/0x38fAc33bD20D4c4Cce085C0f347153C06CbA2968
-      target: '0x38fAc33bD20D4c4Cce085C0f347153C06CbA2968' as Address,
+      // https://explorer-odyssey-2.t.conduit.xyz/address/0x28077B47Cd03326De7838926A63699849DD4fa87
+      target: '0x28077B47Cd03326De7838926A63699849DD4fa87' as Address,
       callData: encodeFunctionData({
         abi: ExperimentERC20.abi,
         functionName: 'approve',
@@ -64,13 +62,32 @@ export function encodeCallByUserCalls(
   nonce: bigint,
 ) {
   // Encode the calls.
-  const encodedCalls = concatHex(
-    calls.map((call) =>
-      encodePacked(
-        ['address', 'bytes', 'uint256'],
-        [call.target, call.callData, call.value],
-      ),
-    ),
+  const encodedCalls = encodeAbiParameters(
+    [
+      {
+        internalType: 'struct Call[]',
+        name: 'calls',
+        type: 'tuple[]',
+        components: [
+          {
+            internalType: 'address',
+            name: 'target',
+            type: 'address',
+          },
+          {
+            internalType: 'bytes',
+            name: 'callData',
+            type: 'bytes',
+          },
+          {
+            internalType: 'uint256',
+            name: 'value',
+            type: 'uint256',
+          },
+        ],
+      },
+    ],
+    [calls],
   )
 
   // Construct the signing payload.
@@ -227,5 +244,79 @@ export function encodeAsset(asset: Asset) {
     ],
     [asset],
   )
+  return encoded
+}
+
+export function encodeOrderData(orderData: {
+  callByUser: CallByUser
+  authData: {
+    authlist: {
+      chainId: bigint
+      codeAddress: Address
+      nonce: bigint
+      signature: Hex
+    }[]
+  }
+  asset: Asset
+}) {
+  const types = [
+    {
+      name: 'calls',
+      type: 'tuple',
+      components: [
+        { name: 'user', type: 'address' },
+        { name: 'nonce', type: 'uint256' },
+        {
+          name: 'asset',
+          type: 'tuple',
+          components: [
+            { name: 'token', type: 'address' },
+            { name: 'amount', type: 'uint256' },
+          ],
+        },
+        { name: 'chainId', type: 'uint64' },
+        { name: 'signature', type: 'bytes' },
+        {
+          name: 'calls',
+          type: 'tuple[]',
+          components: [
+            { name: 'target', type: 'address' },
+            { name: 'callData', type: 'bytes' },
+            { name: 'value', type: 'uint256' },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'authData',
+      type: 'tuple',
+      components: [
+        {
+          name: 'authlist',
+          type: 'tuple[]',
+          components: [
+            { name: 'chainId', type: 'uint256' },
+            { name: 'codeAddress', type: 'address' },
+            { name: 'nonce', type: 'uint256' },
+            { name: 'signature', type: 'bytes' },
+          ],
+        },
+      ],
+    },
+    {
+      name: 'inputAsset',
+      type: 'tuple',
+      components: [
+        { name: 'token', type: 'address' },
+        { name: 'amount', type: 'uint256' },
+      ],
+    },
+  ]
+
+  const encoded = encodeAbiParameters(types, [
+    orderData.callByUser,
+    orderData.authData,
+    orderData.asset,
+  ])
   return encoded
 }

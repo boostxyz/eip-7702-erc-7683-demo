@@ -17,6 +17,7 @@ async function main() {
   const destinationSettlerClient = new DestinationSettlerClient(
     `0x${process.env.RELAYER_PRIVATE_KEY}`,
   )
+  console.log("Listening for deposit events.");
   originSettler.on(
     originSettler.filters.Open(),
     async (orderId, resolvedOrder, openEvent) => {
