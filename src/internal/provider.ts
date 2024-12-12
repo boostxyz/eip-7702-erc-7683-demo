@@ -581,14 +581,15 @@ function getActiveSessionKeyIndex(parameters: {
   account: AccountDelegation.Account
   id?: Hex.Hex | undefined
 }) {
-  const { account, id } = parameters
-  if (id)
-    return account.keys.findIndex(
-      (key) => PublicKey.toHex(key.publicKey) === id,
-    )
-  const index = account.keys.findIndex(AccountDelegation.isActiveSessionKey)
-  if (index === -1) return 0
-  return index
+  return 0
+  // const { account, id } = parameters
+  // if (id)
+  //   return account.keys.findIndex(
+  //     (key) => PublicKey.toHex(key.publicKey) === id,
+  //   )
+  // const index = account.keys.findIndex(AccountDelegation.isActiveSessionKey)
+  // if (index === -1) return 0
+  // return index
 }
 
 function getActiveSessionKeys(

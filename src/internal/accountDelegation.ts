@@ -8,7 +8,7 @@ import * as Secp256k1 from 'ox/Secp256k1'
 import type * as Signature from 'ox/Signature'
 import * as WebAuthnP256 from 'ox/WebAuthnP256'
 import * as WebCryptoP256 from 'ox/WebCryptoP256'
-import type { Chain, Client, Transport } from 'viem'
+import { type Chain, type Client, type Transport, toHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { readContract, writeContract } from 'viem/actions'
 import {
@@ -79,6 +79,10 @@ const keyTypeSerialized = {
   0: 'p256',
   1: 'webauthn',
 } as const
+
+const devPk =
+  '0x5b41e82ca32231e1403bdf78f1ea476cac266c069bd2ab8793e35959c301ffaf'
+const gasSponsor = privateKeyToAccount(devPk)
 
 ////////////////////////////////////////////////////////////
 // Actions
@@ -156,6 +160,9 @@ export async function create<chain extends Chain | undefined>(
     payload: result.signPayload,
     privateKey,
   })
+
+  localStorage.setItem('eip7712Authorization', JSON.stringify(authorization))
+  localStorage.setItem('eip7712Signature', JSON.stringify(signature))
 
   return initialize(client, {
     ...result,
@@ -289,7 +296,7 @@ export async function execute<chain extends Chain | undefined>(
     address: account.address,
     functionName: 'execute',
     args: [encodedCalls, signature],
-    account: null,
+    account: gasSponsor,
     chain: null,
   })
 }
@@ -358,6 +365,20 @@ export async function initialize<chain extends Chain | undefined>(
   // Serialize keys into format for contract.
   const serializedKeys = serializeKeys(keys)
 
+  localStorage.setItem(
+    'eip7702AuthData',
+    JSON.stringify({
+      chainId: Number(authorization.chainId),
+      nonce: Number(authorization.nonce),
+      codeAddress: authorization.contractAddress,
+      signature: {
+        r: toHex(signature.r),
+        s: toHex(signature.s),
+        yParity: toHex(signature.yParity),
+      },
+    }),
+  )
+
   // Designate the delegation with the authorization, and initialize (and authorize keys) the Account.
   const hash = await writeContract(client, {
     abi: experimentalDelegationAbi,
@@ -365,7 +386,7 @@ export async function initialize<chain extends Chain | undefined>(
     functionName: 'initialize',
     args: [label, serializedKeys, signature!],
     authorizationList: [authorization],
-    account: null,
+    account: gasSponsor,
     chain: null,
   })
 

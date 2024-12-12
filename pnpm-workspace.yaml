@@ -2,6 +2,7 @@ packages:
   - 'app'
   - 'examples/*'
   - 'playground'
+  - 'relayer'
   - 'src'
 
 catalog:
