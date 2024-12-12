@@ -2,48 +2,48 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import type { Provider } from '@ethersproject/providers'
+import { Contract, type Signer, utils } from 'ethers'
 import type {
   IDestinationSettler,
   IDestinationSettlerInterface,
-} from "../../ERC7683.sol/IDestinationSettler";
+} from '../../ERC7683.sol/IDestinationSettler'
 
 const _abi = [
   {
-    type: "function",
-    name: "fill",
+    type: 'function',
+    name: 'fill',
     inputs: [
       {
-        name: "orderId",
-        type: "bytes32",
-        internalType: "bytes32",
+        name: 'orderId',
+        type: 'bytes32',
+        internalType: 'bytes32',
       },
       {
-        name: "originData",
-        type: "bytes",
-        internalType: "bytes",
+        name: 'originData',
+        type: 'bytes',
+        internalType: 'bytes',
       },
       {
-        name: "fillerData",
-        type: "bytes",
-        internalType: "bytes",
+        name: 'fillerData',
+        type: 'bytes',
+        internalType: 'bytes',
       },
     ],
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
-] as const;
+] as const
 
 export class IDestinationSettler__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): IDestinationSettlerInterface {
-    return new utils.Interface(_abi) as IDestinationSettlerInterface;
+    return new utils.Interface(_abi) as IDestinationSettlerInterface
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider,
   ): IDestinationSettler {
-    return new Contract(address, _abi, signerOrProvider) as IDestinationSettler;
+    return new Contract(address, _abi, signerOrProvider) as IDestinationSettler
   }
 }

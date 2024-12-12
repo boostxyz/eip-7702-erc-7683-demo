@@ -1,10 +1,10 @@
 import { W } from 'porto/wagmi'
 import {
-  Address,
+  type Address,
+  type Hex,
   concat,
   concatHex,
   formatEther,
-  Hex,
   keccak256,
   maxUint32,
   padBytes,
@@ -21,18 +21,18 @@ import {
 } from 'wagmi'
 import { useCallsStatus, useSendCalls } from 'wagmi/experimental'
 
+import { odysseyTestnet2 } from '../config'
 import {
-  ExperimentalDelegation,
   ExperimentERC20,
+  ExperimentalDelegation,
   OriginSettler,
   Staking,
 } from '../contracts'
-import { odysseyTestnet2 } from '../config'
 import {
   encodeAsset,
   encodeCallByUser,
-  encodeEIP7702AuthData,
   encodeCallByUserCalls,
+  encodeEIP7702AuthData,
   encodeStakingCalls,
 } from '../settler'
 
@@ -97,8 +97,6 @@ function StakeForm() {
     address: address!,
   })
 
-  console.log({ error })
-
   return (
     <div>
       <h2>Stake</h2>
@@ -132,7 +130,6 @@ function StakeForm() {
           const eip7702AuthDataFromInit = JSON.parse(
             localStorage.getItem('eip7702AuthData') ?? '{}',
           )
-          console.log('@@@', eip7702AuthDataFromInit)
 
           const eip7702AuthData = {
             authlist: [
@@ -152,12 +149,6 @@ function StakeForm() {
             encodedEIP7702AuthData,
             encodedAsset,
           ])
-          console.log('@@@', {
-            encodedCallByUser,
-            encodedEIP7702AuthData,
-            encodedAsset,
-            encodedOrderData,
-          })
 
           sendCalls({
             chainId: odysseyTestnet2.id,

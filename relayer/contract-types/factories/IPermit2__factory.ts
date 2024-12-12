@@ -2,129 +2,129 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { IPermit2, IPermit2Interface } from "../IPermit2";
+import type { Provider } from '@ethersproject/providers'
+import { Contract, type Signer, utils } from 'ethers'
+import type { IPermit2, IPermit2Interface } from '../IPermit2'
 
 const _abi = [
   {
-    type: "function",
-    name: "permitWitnessTransferFrom",
+    type: 'function',
+    name: 'permitWitnessTransferFrom',
     inputs: [
       {
-        name: "permit",
-        type: "tuple",
-        internalType: "struct IPermit2.PermitTransferFrom",
+        name: 'permit',
+        type: 'tuple',
+        internalType: 'struct IPermit2.PermitTransferFrom',
         components: [
           {
-            name: "permitted",
-            type: "tuple",
-            internalType: "struct IPermit2.TokenPermissions",
+            name: 'permitted',
+            type: 'tuple',
+            internalType: 'struct IPermit2.TokenPermissions',
             components: [
               {
-                name: "token",
-                type: "address",
-                internalType: "address",
+                name: 'token',
+                type: 'address',
+                internalType: 'address',
               },
               {
-                name: "amount",
-                type: "uint256",
-                internalType: "uint256",
+                name: 'amount',
+                type: 'uint256',
+                internalType: 'uint256',
               },
             ],
           },
           {
-            name: "nonce",
-            type: "uint256",
-            internalType: "uint256",
+            name: 'nonce',
+            type: 'uint256',
+            internalType: 'uint256',
           },
           {
-            name: "deadline",
-            type: "uint256",
-            internalType: "uint256",
+            name: 'deadline',
+            type: 'uint256',
+            internalType: 'uint256',
           },
         ],
       },
       {
-        name: "transferDetails",
-        type: "tuple",
-        internalType: "struct IPermit2.SignatureTransferDetails",
+        name: 'transferDetails',
+        type: 'tuple',
+        internalType: 'struct IPermit2.SignatureTransferDetails',
         components: [
           {
-            name: "to",
-            type: "address",
-            internalType: "address",
+            name: 'to',
+            type: 'address',
+            internalType: 'address',
           },
           {
-            name: "requestedAmount",
-            type: "uint256",
-            internalType: "uint256",
+            name: 'requestedAmount',
+            type: 'uint256',
+            internalType: 'uint256',
           },
         ],
       },
       {
-        name: "owner",
-        type: "address",
-        internalType: "address",
+        name: 'owner',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "witness",
-        type: "bytes32",
-        internalType: "bytes32",
+        name: 'witness',
+        type: 'bytes32',
+        internalType: 'bytes32',
       },
       {
-        name: "witnessTypeString",
-        type: "string",
-        internalType: "string",
+        name: 'witnessTypeString',
+        type: 'string',
+        internalType: 'string',
       },
       {
-        name: "signature",
-        type: "bytes",
-        internalType: "bytes",
+        name: 'signature',
+        type: 'bytes',
+        internalType: 'bytes',
       },
     ],
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
   {
-    type: "function",
-    name: "transferFrom",
+    type: 'function',
+    name: 'transferFrom',
     inputs: [
       {
-        name: "from",
-        type: "address",
-        internalType: "address",
+        name: 'from',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "to",
-        type: "address",
-        internalType: "address",
+        name: 'to',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "amount",
-        type: "uint160",
-        internalType: "uint160",
+        name: 'amount',
+        type: 'uint160',
+        internalType: 'uint160',
       },
       {
-        name: "token",
-        type: "address",
-        internalType: "address",
+        name: 'token',
+        type: 'address',
+        internalType: 'address',
       },
     ],
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'nonpayable',
   },
-] as const;
+] as const
 
 export class IPermit2__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): IPermit2Interface {
-    return new utils.Interface(_abi) as IPermit2Interface;
+    return new utils.Interface(_abi) as IPermit2Interface
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider,
   ): IPermit2 {
-    return new Contract(address, _abi, signerOrProvider) as IPermit2;
+    return new Contract(address, _abi, signerOrProvider) as IPermit2
   }
 }

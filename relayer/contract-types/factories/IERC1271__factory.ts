@@ -2,46 +2,46 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { IERC1271, IERC1271Interface } from "../IERC1271";
+import type { Provider } from '@ethersproject/providers'
+import { Contract, type Signer, utils } from 'ethers'
+import type { IERC1271, IERC1271Interface } from '../IERC1271'
 
 const _abi = [
   {
-    type: "function",
-    name: "isValidSignature",
+    type: 'function',
+    name: 'isValidSignature',
     inputs: [
       {
-        name: "hash",
-        type: "bytes32",
-        internalType: "bytes32",
+        name: 'hash',
+        type: 'bytes32',
+        internalType: 'bytes32',
       },
       {
-        name: "signature",
-        type: "bytes",
-        internalType: "bytes",
+        name: 'signature',
+        type: 'bytes',
+        internalType: 'bytes',
       },
     ],
     outputs: [
       {
-        name: "magicValue",
-        type: "bytes4",
-        internalType: "bytes4",
+        name: 'magicValue',
+        type: 'bytes4',
+        internalType: 'bytes4',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
-] as const;
+] as const
 
 export class IERC1271__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): IERC1271Interface {
-    return new utils.Interface(_abi) as IERC1271Interface;
+    return new utils.Interface(_abi) as IERC1271Interface
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider,
   ): IERC1271 {
-    return new Contract(address, _abi, signerOrProvider) as IERC1271;
+    return new Contract(address, _abi, signerOrProvider) as IERC1271
   }
 }

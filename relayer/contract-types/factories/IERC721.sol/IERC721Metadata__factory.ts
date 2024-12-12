@@ -2,355 +2,355 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import type { Provider } from '@ethersproject/providers'
+import { Contract, type Signer, utils } from 'ethers'
 import type {
   IERC721Metadata,
   IERC721MetadataInterface,
-} from "../../IERC721.sol/IERC721Metadata";
+} from '../../IERC721.sol/IERC721Metadata'
 
 const _abi = [
   {
-    type: "function",
-    name: "approve",
+    type: 'function',
+    name: 'approve',
     inputs: [
       {
-        name: "_approved",
-        type: "address",
-        internalType: "address",
+        name: '_approved',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "_tokenId",
-        type: "uint256",
-        internalType: "uint256",
+        name: '_tokenId',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: 'payable',
   },
   {
-    type: "function",
-    name: "balanceOf",
+    type: 'function',
+    name: 'balanceOf',
     inputs: [
       {
-        name: "_owner",
-        type: "address",
-        internalType: "address",
+        name: '_owner',
+        type: 'address',
+        internalType: 'address',
       },
     ],
     outputs: [
       {
-        name: "",
-        type: "uint256",
-        internalType: "uint256",
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "getApproved",
+    type: 'function',
+    name: 'getApproved',
     inputs: [
       {
-        name: "_tokenId",
-        type: "uint256",
-        internalType: "uint256",
+        name: '_tokenId',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
     outputs: [
       {
-        name: "",
-        type: "address",
-        internalType: "address",
+        name: '',
+        type: 'address',
+        internalType: 'address',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "isApprovedForAll",
+    type: 'function',
+    name: 'isApprovedForAll',
     inputs: [
       {
-        name: "_owner",
-        type: "address",
-        internalType: "address",
+        name: '_owner',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "_operator",
-        type: "address",
-        internalType: "address",
+        name: '_operator',
+        type: 'address',
+        internalType: 'address',
       },
     ],
     outputs: [
       {
-        name: "",
-        type: "bool",
-        internalType: "bool",
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "name",
+    type: 'function',
+    name: 'name',
     inputs: [],
     outputs: [
       {
-        name: "_name",
-        type: "string",
-        internalType: "string",
+        name: '_name',
+        type: 'string',
+        internalType: 'string',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "ownerOf",
+    type: 'function',
+    name: 'ownerOf',
     inputs: [
       {
-        name: "_tokenId",
-        type: "uint256",
-        internalType: "uint256",
+        name: '_tokenId',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
     outputs: [
       {
-        name: "",
-        type: "address",
-        internalType: "address",
+        name: '',
+        type: 'address',
+        internalType: 'address',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "safeTransferFrom",
+    type: 'function',
+    name: 'safeTransferFrom',
     inputs: [
       {
-        name: "_from",
-        type: "address",
-        internalType: "address",
+        name: '_from',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "_to",
-        type: "address",
-        internalType: "address",
+        name: '_to',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "_tokenId",
-        type: "uint256",
-        internalType: "uint256",
-      },
-    ],
-    outputs: [],
-    stateMutability: "payable",
-  },
-  {
-    type: "function",
-    name: "safeTransferFrom",
-    inputs: [
-      {
-        name: "_from",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "_to",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "_tokenId",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "data",
-        type: "bytes",
-        internalType: "bytes",
+        name: '_tokenId',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: 'payable',
   },
   {
-    type: "function",
-    name: "setApprovalForAll",
+    type: 'function',
+    name: 'safeTransferFrom',
     inputs: [
       {
-        name: "_operator",
-        type: "address",
-        internalType: "address",
+        name: '_from',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "_approved",
-        type: "bool",
-        internalType: "bool",
+        name: '_to',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_tokenId',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'data',
+        type: 'bytes',
+        internalType: 'bytes',
       },
     ],
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: 'payable',
   },
   {
-    type: "function",
-    name: "supportsInterface",
+    type: 'function',
+    name: 'setApprovalForAll',
     inputs: [
       {
-        name: "interfaceID",
-        type: "bytes4",
-        internalType: "bytes4",
+        name: '_operator',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_approved',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'supportsInterface',
+    inputs: [
+      {
+        name: 'interfaceID',
+        type: 'bytes4',
+        internalType: 'bytes4',
       },
     ],
     outputs: [
       {
-        name: "",
-        type: "bool",
-        internalType: "bool",
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "symbol",
+    type: 'function',
+    name: 'symbol',
     inputs: [],
     outputs: [
       {
-        name: "_symbol",
-        type: "string",
-        internalType: "string",
+        name: '_symbol',
+        type: 'string',
+        internalType: 'string',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "tokenURI",
+    type: 'function',
+    name: 'tokenURI',
     inputs: [
       {
-        name: "_tokenId",
-        type: "uint256",
-        internalType: "uint256",
+        name: '_tokenId',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
     outputs: [
       {
-        name: "",
-        type: "string",
-        internalType: "string",
+        name: '',
+        type: 'string',
+        internalType: 'string',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "transferFrom",
+    type: 'function',
+    name: 'transferFrom',
     inputs: [
       {
-        name: "_from",
-        type: "address",
-        internalType: "address",
+        name: '_from',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "_to",
-        type: "address",
-        internalType: "address",
+        name: '_to',
+        type: 'address',
+        internalType: 'address',
       },
       {
-        name: "_tokenId",
-        type: "uint256",
-        internalType: "uint256",
+        name: '_tokenId',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
     outputs: [],
-    stateMutability: "payable",
+    stateMutability: 'payable',
   },
   {
-    type: "event",
-    name: "Approval",
+    type: 'event',
+    name: 'Approval',
     inputs: [
       {
-        name: "_owner",
-        type: "address",
+        name: '_owner',
+        type: 'address',
         indexed: true,
-        internalType: "address",
+        internalType: 'address',
       },
       {
-        name: "_approved",
-        type: "address",
+        name: '_approved',
+        type: 'address',
         indexed: true,
-        internalType: "address",
+        internalType: 'address',
       },
       {
-        name: "_tokenId",
-        type: "uint256",
+        name: '_tokenId',
+        type: 'uint256',
         indexed: true,
-        internalType: "uint256",
+        internalType: 'uint256',
       },
     ],
     anonymous: false,
   },
   {
-    type: "event",
-    name: "ApprovalForAll",
+    type: 'event',
+    name: 'ApprovalForAll',
     inputs: [
       {
-        name: "_owner",
-        type: "address",
+        name: '_owner',
+        type: 'address',
         indexed: true,
-        internalType: "address",
+        internalType: 'address',
       },
       {
-        name: "_operator",
-        type: "address",
+        name: '_operator',
+        type: 'address',
         indexed: true,
-        internalType: "address",
+        internalType: 'address',
       },
       {
-        name: "_approved",
-        type: "bool",
+        name: '_approved',
+        type: 'bool',
         indexed: false,
-        internalType: "bool",
+        internalType: 'bool',
       },
     ],
     anonymous: false,
   },
   {
-    type: "event",
-    name: "Transfer",
+    type: 'event',
+    name: 'Transfer',
     inputs: [
       {
-        name: "_from",
-        type: "address",
+        name: '_from',
+        type: 'address',
         indexed: true,
-        internalType: "address",
+        internalType: 'address',
       },
       {
-        name: "_to",
-        type: "address",
+        name: '_to',
+        type: 'address',
         indexed: true,
-        internalType: "address",
+        internalType: 'address',
       },
       {
-        name: "_tokenId",
-        type: "uint256",
+        name: '_tokenId',
+        type: 'uint256',
         indexed: true,
-        internalType: "uint256",
+        internalType: 'uint256',
       },
     ],
     anonymous: false,
   },
-] as const;
+] as const
 
 export class IERC721Metadata__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): IERC721MetadataInterface {
-    return new utils.Interface(_abi) as IERC721MetadataInterface;
+    return new utils.Interface(_abi) as IERC721MetadataInterface
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider,
   ): IERC721Metadata {
-    return new Contract(address, _abi, signerOrProvider) as IERC721Metadata;
+    return new Contract(address, _abi, signerOrProvider) as IERC721Metadata
   }
 }

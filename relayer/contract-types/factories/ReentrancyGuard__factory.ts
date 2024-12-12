@@ -2,30 +2,30 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
+import type { Provider } from '@ethersproject/providers'
+import { Contract, type Signer, utils } from 'ethers'
 import type {
   ReentrancyGuard,
   ReentrancyGuardInterface,
-} from "../ReentrancyGuard";
+} from '../ReentrancyGuard'
 
 const _abi = [
   {
-    type: "error",
-    name: "ReentrancyGuardReentrantCall",
+    type: 'error',
+    name: 'ReentrancyGuardReentrantCall',
     inputs: [],
   },
-] as const;
+] as const
 
 export class ReentrancyGuard__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): ReentrancyGuardInterface {
-    return new utils.Interface(_abi) as ReentrancyGuardInterface;
+    return new utils.Interface(_abi) as ReentrancyGuardInterface
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider,
   ): ReentrancyGuard {
-    return new Contract(address, _abi, signerOrProvider) as ReentrancyGuard;
+    return new Contract(address, _abi, signerOrProvider) as ReentrancyGuard
   }
 }

@@ -8,7 +8,7 @@ import * as Secp256k1 from 'ox/Secp256k1'
 import type * as Signature from 'ox/Signature'
 import * as WebAuthnP256 from 'ox/WebAuthnP256'
 import * as WebCryptoP256 from 'ox/WebCryptoP256'
-import { toHex, type Chain, type Client, type Transport } from 'viem'
+import { type Chain, type Client, type Transport, toHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { readContract, writeContract } from 'viem/actions'
 import {
@@ -132,7 +132,6 @@ export async function create<chain extends Chain | undefined>(
   client: Client<Transport, chain>,
   parameters: create.Parameters,
 ) {
-  console.log('#create')
   // Generate a random private key to instantiate the Account.
   // We will only hold onto the private key for the duration of this lexical scope
   // (we will not persist it).
@@ -380,8 +379,6 @@ export async function initialize<chain extends Chain | undefined>(
     }),
   )
 
-  console.log('#initialize', { account, authorization, address, signature })
-
   // Designate the delegation with the authorization, and initialize (and authorize keys) the Account.
   const hash = await writeContract(client, {
     abi: experimentalDelegationAbi,
@@ -392,8 +389,6 @@ export async function initialize<chain extends Chain | undefined>(
     account: gasSponsor,
     chain: null,
   })
-
-  console.log('#initialize', { hash })
 
   return {
     account,
@@ -650,8 +645,6 @@ export async function sign(parameters: sign.Parameters) {
   // If the key is not found, or is locked, we cannot sign.
   if (!key) throw new Error('key not found')
   if (key.status === 'locked') throw new Error('key is locked')
-
-  console.log('#sign', { key, account, payload })
 
   if (key.type === 'webauthn') {
     const { signature, metadata } = await WebAuthnP256.sign({

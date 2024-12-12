@@ -2,200 +2,200 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { Contract, Signer, utils } from "ethers";
-import type { Provider } from "@ethersproject/providers";
-import type { StdInvariant, StdInvariantInterface } from "../StdInvariant";
+import type { Provider } from '@ethersproject/providers'
+import { Contract, type Signer, utils } from 'ethers'
+import type { StdInvariant, StdInvariantInterface } from '../StdInvariant'
 
 const _abi = [
   {
-    type: "function",
-    name: "excludeArtifacts",
+    type: 'function',
+    name: 'excludeArtifacts',
     inputs: [],
     outputs: [
       {
-        name: "excludedArtifacts_",
-        type: "string[]",
-        internalType: "string[]",
+        name: 'excludedArtifacts_',
+        type: 'string[]',
+        internalType: 'string[]',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "excludeContracts",
+    type: 'function',
+    name: 'excludeContracts',
     inputs: [],
     outputs: [
       {
-        name: "excludedContracts_",
-        type: "address[]",
-        internalType: "address[]",
+        name: 'excludedContracts_',
+        type: 'address[]',
+        internalType: 'address[]',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "excludeSelectors",
+    type: 'function',
+    name: 'excludeSelectors',
     inputs: [],
     outputs: [
       {
-        name: "excludedSelectors_",
-        type: "tuple[]",
-        internalType: "struct StdInvariant.FuzzSelector[]",
+        name: 'excludedSelectors_',
+        type: 'tuple[]',
+        internalType: 'struct StdInvariant.FuzzSelector[]',
         components: [
           {
-            name: "addr",
-            type: "address",
-            internalType: "address",
+            name: 'addr',
+            type: 'address',
+            internalType: 'address',
           },
           {
-            name: "selectors",
-            type: "bytes4[]",
-            internalType: "bytes4[]",
+            name: 'selectors',
+            type: 'bytes4[]',
+            internalType: 'bytes4[]',
           },
         ],
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "excludeSenders",
+    type: 'function',
+    name: 'excludeSenders',
     inputs: [],
     outputs: [
       {
-        name: "excludedSenders_",
-        type: "address[]",
-        internalType: "address[]",
+        name: 'excludedSenders_',
+        type: 'address[]',
+        internalType: 'address[]',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "targetArtifactSelectors",
+    type: 'function',
+    name: 'targetArtifactSelectors',
     inputs: [],
     outputs: [
       {
-        name: "targetedArtifactSelectors_",
-        type: "tuple[]",
-        internalType: "struct StdInvariant.FuzzArtifactSelector[]",
+        name: 'targetedArtifactSelectors_',
+        type: 'tuple[]',
+        internalType: 'struct StdInvariant.FuzzArtifactSelector[]',
         components: [
           {
-            name: "artifact",
-            type: "string",
-            internalType: "string",
+            name: 'artifact',
+            type: 'string',
+            internalType: 'string',
           },
           {
-            name: "selectors",
-            type: "bytes4[]",
-            internalType: "bytes4[]",
+            name: 'selectors',
+            type: 'bytes4[]',
+            internalType: 'bytes4[]',
           },
         ],
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "targetArtifacts",
+    type: 'function',
+    name: 'targetArtifacts',
     inputs: [],
     outputs: [
       {
-        name: "targetedArtifacts_",
-        type: "string[]",
-        internalType: "string[]",
+        name: 'targetedArtifacts_',
+        type: 'string[]',
+        internalType: 'string[]',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "targetContracts",
+    type: 'function',
+    name: 'targetContracts',
     inputs: [],
     outputs: [
       {
-        name: "targetedContracts_",
-        type: "address[]",
-        internalType: "address[]",
+        name: 'targetedContracts_',
+        type: 'address[]',
+        internalType: 'address[]',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "targetInterfaces",
+    type: 'function',
+    name: 'targetInterfaces',
     inputs: [],
     outputs: [
       {
-        name: "targetedInterfaces_",
-        type: "tuple[]",
-        internalType: "struct StdInvariant.FuzzInterface[]",
+        name: 'targetedInterfaces_',
+        type: 'tuple[]',
+        internalType: 'struct StdInvariant.FuzzInterface[]',
         components: [
           {
-            name: "addr",
-            type: "address",
-            internalType: "address",
+            name: 'addr',
+            type: 'address',
+            internalType: 'address',
           },
           {
-            name: "artifacts",
-            type: "string[]",
-            internalType: "string[]",
+            name: 'artifacts',
+            type: 'string[]',
+            internalType: 'string[]',
           },
         ],
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "targetSelectors",
+    type: 'function',
+    name: 'targetSelectors',
     inputs: [],
     outputs: [
       {
-        name: "targetedSelectors_",
-        type: "tuple[]",
-        internalType: "struct StdInvariant.FuzzSelector[]",
+        name: 'targetedSelectors_',
+        type: 'tuple[]',
+        internalType: 'struct StdInvariant.FuzzSelector[]',
         components: [
           {
-            name: "addr",
-            type: "address",
-            internalType: "address",
+            name: 'addr',
+            type: 'address',
+            internalType: 'address',
           },
           {
-            name: "selectors",
-            type: "bytes4[]",
-            internalType: "bytes4[]",
+            name: 'selectors',
+            type: 'bytes4[]',
+            internalType: 'bytes4[]',
           },
         ],
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
   {
-    type: "function",
-    name: "targetSenders",
+    type: 'function',
+    name: 'targetSenders',
     inputs: [],
     outputs: [
       {
-        name: "targetedSenders_",
-        type: "address[]",
-        internalType: "address[]",
+        name: 'targetedSenders_',
+        type: 'address[]',
+        internalType: 'address[]',
       },
     ],
-    stateMutability: "view",
+    stateMutability: 'view',
   },
-] as const;
+] as const
 
 export class StdInvariant__factory {
-  static readonly abi = _abi;
+  static readonly abi = _abi
   static createInterface(): StdInvariantInterface {
-    return new utils.Interface(_abi) as StdInvariantInterface;
+    return new utils.Interface(_abi) as StdInvariantInterface
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider,
   ): StdInvariant {
-    return new Contract(address, _abi, signerOrProvider) as StdInvariant;
+    return new Contract(address, _abi, signerOrProvider) as StdInvariant
   }
 }

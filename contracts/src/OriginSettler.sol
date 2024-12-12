@@ -40,7 +40,7 @@ contract OriginSettler is ReentrancyGuard {
         (ResolvedCrossChainOrder memory resolvedOrder,, EIP7702AuthData memory authData, Asset memory inputAsset) =
             _resolve(order);
 
-        require(pendingOrders[resolvedOrder.orderId].amount > 0, "Order already pending");
+        require(pendingOrders[resolvedOrder.orderId].amount == 0, "Order already pending");
         pendingOrders[resolvedOrder.orderId] = inputAsset;
 
         // TODO: Assets should only be releaseable to the filler

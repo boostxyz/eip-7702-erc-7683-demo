@@ -30,5 +30,6 @@ export const env = {
   originProviderUrl: getEnvVar('ORIGIN_PROVIDER_URL'),
   destinationProviderUrl: getEnvVar('DESTINATION_PROVIDER_URL'),
   relayerKey: getPrivateKey(getEnvVar('RELAYER_PRIVATE_KEY')),
+  destinationSettler: ethers.utils.getAddress(getEnvVar('DESTINATION_SETTLER')),
   originSettler: ethers.utils.getAddress(getEnvVar('ORIGIN_SETTLER')),
 }
