@@ -8,7 +8,7 @@ export function Account() {
   const disconnect = W.useDisconnect()
 
   return (
-    <div className="w-full text-xl flex flex-col gap-2 items-start">
+    <div className="w-full text-xl flex flex-col gap-2 items-start mb-8">
       <div className="w-full flex gap-2 items-center">
         <span className="font-bold ">Account:</span>
         <a

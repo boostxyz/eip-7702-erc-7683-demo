@@ -19,7 +19,7 @@ const privateKey =
 
 export function Onboarding() {
   return (
-    <div className="container items-center flex flex-col gap-6">
+    <div className="container max-w-sm items-center flex flex-col gap-6">
       <Connect />
       <ImportAccount />
     </div>

@@ -10,7 +10,7 @@ export function App() {
         <h1>Chain Abstraction demo</h1>
       </nav>
       {isConnected ? (
-        <div className="container">
+        <div className="container max-w-screen-sm">
           <Account />
           <Balance />
           <GrantSession />

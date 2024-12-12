@@ -669,7 +669,7 @@ export const OriginSettler = {
       name: 'repayFiller',
     },
   ],
-  address: '0xad5503B3C7e35EAF0E88df80b4B626eD0C0404A0',
+  address: '0x2d4710F04Da90184255782d3715224A6C776955D',
 } as const
 
 export const Staking = {
