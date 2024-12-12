@@ -28,6 +28,10 @@ export function Balance() {
     functionName: 'userStakes',
     args: [address!],
     chainId: odysseyTestnet2.id,
+    query: {
+      enabled: !!address,
+      refetchInterval: 2_000,
+    },
   })
   const { data: id, error, isPending, sendCalls } = useSendCalls()
   const { isLoading: isConfirming, isSuccess: isConfirmed } = useCallsStatus({

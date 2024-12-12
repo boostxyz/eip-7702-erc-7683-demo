@@ -109,9 +109,9 @@ function StakeForm() {
               encodedStakingCalls,
               nonce ?? 0n,
             )
-            const signature = await signMessageAsync({
-              message: encodedCallByUserCalls,
-            })
+            // const signature = await signMessageAsync({
+            //   message: encodedCallByUserCalls,
+            // })
             const callByUser = {
               user: address!,
               nonce: nonce ?? 0n,
@@ -120,7 +120,7 @@ function StakeForm() {
                 amount,
               },
               chainId: BigInt(odysseyTestnet2.id),
-              signature: signature,
+              signature: '0x' as Hex,
               calls: encodedStakingCalls,
             }
             // const eip7702AuthDataFromInit = JSON.parse(
