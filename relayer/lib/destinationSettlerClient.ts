@@ -39,10 +39,10 @@ export class DestinationSettlerClient {
       account: privateKeyToAccount(privateKey),
       chain: odyssey2,
       transport: http(),
-    })
+    });
     this.destinationSettler = getDestinationSettlerContract(
       getDestinationProvider(),
-    )
+    );
     this.destinationChainId = BigNumber.from(this.viemSigner.chain.id)
   }
 
@@ -91,7 +91,9 @@ export class DestinationSettlerClient {
           targetAddress: token.address,
           data: approveData.data,
         } as ContractCall
-        const approveTxHash = await this.send(approvalCall)
+        const approveTxHash = await this.send(approvalCall);
+	// TODO: Await the approval
+	//const receipt = await this.viemProvider.waitForTransactionReceipt({ hash: approveTxHash });
       }
       const data = await this.destinationSettler.populateTransaction.fill(
         orderId,

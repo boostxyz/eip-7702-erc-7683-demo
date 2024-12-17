@@ -21,7 +21,8 @@ async function main() {
   originSettler.on(
     originSettler.filters.Open(),
     async (orderId, resolvedOrder, openEvent) => {
-      const txnHash = await destinationSettlerClient.fill(resolvedOrder)
+      const txnHash = await destinationSettlerClient.fill(resolvedOrder);
+      console.log(`Executed fill with hash ${txnHash}`);
     },
   )
 }
