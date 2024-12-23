@@ -45,6 +45,7 @@ export const odysseyTestnet2 = /*#__PURE__*/ define({
     ...chains.odysseyTestnet.contracts,
     accountDelegation: {
       //address: '0x1F5AA71C79ec6a11FC55789ed32dAE3B64d75791',
+      // WARNING: CHANGE THIS to our deploy
       address: '0x700b6a60ce7eaaea56f065753d8dcb9653dbad35',
     },
   },

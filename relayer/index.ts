@@ -1,6 +1,7 @@
 import {
   boostCoreAbi,
   destinationSettlerAbi,
+  mockErc20Abi,
   originSettlerAbi,
 } from '@boostxyz/evm'
 import {
@@ -15,6 +16,7 @@ import {
   encodeAbiParameters,
   type Hex,
   http,
+  maxUint256,
 } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 const boostCoreAddress = process.env.BOOST_CORE as Address
@@ -22,6 +24,7 @@ const boostCoreAddress = process.env.BOOST_CORE as Address
 const account = privateKeyToAccount(env.relayerKey)
 
 async function main() {
+  await setupFillerAllowance();
   // Get providers.
   const originClient = createPublicClient({
     chain: odyssey2,
@@ -103,4 +106,30 @@ async function fillOrder(orderId: Hex, userCalls: Hex) {
 
   await walletClient.writeContract(result.request)
   console.log('Success!')
+}
+
+async function setupFillerAllowance() {
+
+  const publicClient = createPublicClient({
+    chain: odyssey2,
+    transport: http(env.destinationProviderUrl),
+  })
+  const walletClient = createWalletClient({
+    account,
+    chain: odyssey2,
+    transport: http(env.destinationProviderUrl),
+  })
+
+  const result = await publicClient.simulateContract({
+    account,
+    address: '0x28077B47Cd03326De7838926A63699849DD4fa87',
+    abi: mockErc20Abi,
+    functionName: 'approve',
+    args: [env.destinationSettler, maxUint256],
+  })
+
+  await walletClient.writeContract(result.request)
+  console.log('Success!')
+
+
 }
