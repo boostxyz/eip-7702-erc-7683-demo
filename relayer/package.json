@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@boostxyz/evm": "link:../../boost-protocol/packages/evm",
+    "@boostxyz/sdk": "link:../../boost-protocol/packages/sdk",
     "dotenv": "^16.4.7",
     "ethers": "5.7",
     "viem": "2.21.51"

@@ -132,7 +132,7 @@ function StakeForm() {
               authlist: [
                 {
                   chainId: BigInt(odysseyTestnet2.id),
-                  codeAddress: ExperimentalDelegation.address,
+                  codeAddress: '0x700b6a60ce7eaaea56f065753d8dcb9653dbad35', //ExperimentalDelegation.address,
                   nonce: nonce ?? 0n,
                   signature: '0x0' as Hex, // TODO: type 4 signature
                 },

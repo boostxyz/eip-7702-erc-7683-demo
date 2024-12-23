@@ -169,7 +169,8 @@ export function from<
                 typeof createAccount === 'object' ? createAccount : {}
               return await AccountDelegation.create(state.client, {
                 authorizeKeys: key ? [key] : undefined,
-                delegation: state.delegation,
+                //delegation: state.delegation,
+                delegation: '0x700b6a60ce7eaaea56f065753d8dcb9653dbad35',
                 label,
                 rpId: keystoreHost,
               })
@@ -209,7 +210,8 @@ export function from<
 
           // TODO: wait for tx to be included/make counterfactual?
           const { account } = await AccountDelegation.create(state.client, {
-            delegation: state.delegation,
+            //delegation: state.delegation,
+            delegation: '0x700b6a60ce7eaaea56f065753d8dcb9653dbad35',
             label,
             rpId: keystoreHost,
           })
@@ -313,7 +315,8 @@ export function from<
             await AccountDelegation.prepareInitialize(state.client, {
               address,
               authorizeKeys: key ? [key] : undefined,
-              delegation: state.delegation,
+              //delegation: state.delegation,
+              delegation: '0x700b6a60ce7eaaea56f065753d8dcb9653dbad35',
               label,
               rpId: keystoreHost,
             })
@@ -577,6 +580,7 @@ export function announce(provider: Provider) {
   })
 }
 
+// @ts-ignore
 function getActiveSessionKeyIndex(parameters: {
   account: AccountDelegation.Account
   id?: Hex.Hex | undefined

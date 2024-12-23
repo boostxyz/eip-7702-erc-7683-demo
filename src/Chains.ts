@@ -27,11 +27,13 @@ export const odysseyTestnet = /*#__PURE__*/ define({
 })
 
 export const odysseyTestnet2 = /*#__PURE__*/ define({
-  id: 9118672,
+  //id: 9118672,
+  id: 31337,
   name: 'Odyssey Testnet 2',
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   rpcUrls: {
-    default: { http: ['https://rpc-odyssey-2.t.conduit.xyz'] },
+    //default: { http: ['https://rpc-odyssey-2.t.conduit.xyz'] },
+    default: { http: ['http://127.0.0.1:8545'] },
   },
   blockExplorers: {
     default: {
@@ -42,7 +44,8 @@ export const odysseyTestnet2 = /*#__PURE__*/ define({
   contracts: {
     ...chains.odysseyTestnet.contracts,
     accountDelegation: {
-      address: '0x1F5AA71C79ec6a11FC55789ed32dAE3B64d75791',
+      //address: '0x1F5AA71C79ec6a11FC55789ed32dAE3B64d75791',
+      address: '0x700b6a60ce7eaaea56f065753d8dcb9653dbad35',
     },
   },
 })

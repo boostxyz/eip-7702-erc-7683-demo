@@ -1,7 +1,8 @@
 import { defineChain } from 'viem'
 
 export const odyssey2 = defineChain({
-  id: 9118672,
+  //id: 9118672,
+  id: 31337,
   name: 'Odyssey2',
   nativeCurrency: {
     decimals: 18,

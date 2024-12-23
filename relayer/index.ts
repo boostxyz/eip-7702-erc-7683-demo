@@ -1,32 +1,106 @@
 import {
-  DestinationSettlerClient,
+  boostCoreAbi,
+  destinationSettlerAbi,
+  originSettlerAbi,
+} from '@boostxyz/evm'
+import {
   env,
-  getOriginSettlerContract,
-  getProvider,
   odyssey2,
 } from './lib'
 
+import {
+  type Address,
+  createPublicClient,
+  createWalletClient,
+  encodeAbiParameters,
+  type Hex,
+  http,
+} from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
+const boostCoreAddress = process.env.BOOST_CORE as Address
+
+const account = privateKeyToAccount(env.relayerKey)
+
 async function main() {
   // Get providers.
-  const originProvider = getProvider(env.originProviderUrl)
-  const originChainId = (await originProvider.getNetwork()).chainId
-  const destinationProvider = getProvider(env.destinationProviderUrl)
-  const destinationChainId = (await destinationProvider.getNetwork()).chainId
+  const originClient = createPublicClient({
+    chain: odyssey2,
+    transport: http(env.originProviderUrl),
+  })
 
-  const originSettler = getOriginSettlerContract(originProvider)
-  const destinationSettlerClient = new DestinationSettlerClient(
-    `0x${process.env.RELAYER_PRIVATE_KEY}`,
-  )
-  console.log("Listening for deposit events.");
-  originSettler.on(
-    originSettler.filters.Open(),
-    async (orderId, resolvedOrder, openEvent) => {
-      const txnHash = await destinationSettlerClient.fill(resolvedOrder)
-    },
-  )
+  /*
+  const logs = await originClient.getContractEvents({
+    address: env.originSettler,
+    abi: originSettlerAbi,
+    eventName: 'Open',
+    //fromBlock: 1662584n,
+    fromBlock: 2343324n,
+    toBlock: 2343324n + 100000n,
+  })
+  if (logs.length > 0) {
+    console.info('found prior open events')
+  }
+  */
+
+  console.log('Listening for deposit events.')
+
+  originClient.watchContractEvent({
+    address: env.originSettler,
+    abi: originSettlerAbi,
+    eventName: 'Open',
+    onLogs: (logs) =>
+      fillOrder(
+        logs[0].args.orderId,
+        // note, only the FIRST call is parsed for this demo
+        logs[0].args.resolvedOrder.fillInstructions[0].originData,
+      ),
+  })
 }
 
-main().catch((error) => {
-  console.error(error)
-  process.exitCode = 1
-})
+run()
+
+async function run() {
+  main().catch((error) => {
+    console.error(error)
+    //run()
+  })
+}
+
+async function fillOrder(orderId: Hex, userCalls: Hex) {
+  const publicClient = createPublicClient({
+    chain: odyssey2,
+    transport: http(env.destinationProviderUrl),
+  })
+  const walletClient = createWalletClient({
+    account,
+    chain: odyssey2,
+    transport: http(env.destinationProviderUrl),
+  })
+
+  const boostCount = await publicClient.readContract({
+    address: boostCoreAddress,
+    abi: boostCoreAbi,
+    functionName: 'getBoostCount',
+  })
+
+  console.log('latest Boost: ', boostCount)
+
+  const fillerData = encodeAbiParameters(
+    [
+      { name: 'boostId', type: 'uint' },
+      { name: 'incentiveId', type: 'uint' },
+    ],
+    [boostCount - 1n, 0n],
+  )
+
+  const result = await publicClient.simulateContract({
+    account,
+    address: env.destinationSettler,
+    abi: destinationSettlerAbi,
+    functionName: 'fill',
+    args: [orderId, userCalls, fillerData],
+  })
+
+  await walletClient.writeContract(result.request)
+  console.log('Success!')
+}
